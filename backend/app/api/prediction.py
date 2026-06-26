@@ -9,7 +9,7 @@ import os
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status, BackgroundTasks
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -52,13 +52,14 @@ def _validate_extension(filename: str) -> str:
     summary="Upload an image for lithology classification",
 )
 async def upload_prediction(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(..., description="Rock core image (jpg/png/tiff/bmp/webp)"),
     model_used: str = Form(default="efficientnet"),
     current_user: User = Depends(get_current_active_user),
     db: AsyncSession = Depends(get_db),
 ) -> PredictionResponse:
     """
-    Upload an image file, save it to disk, and enqueue a Celery inference task.
+    Upload an image file, save it to disk, and run background inference.
     Returns the pending prediction record immediately.
     """
     if file.size and file.size > settings.MAX_FILE_SIZE:
@@ -105,17 +106,13 @@ async def upload_prediction(
     await db.flush()
     await db.refresh(prediction)
 
-    # Enqueue Celery task
+    # Run BackgroundTask
     try:
-        from app.tasks.prediction_tasks import process_prediction  # noqa: PLC0415
-
-        process_prediction.delay(prediction.id)
-        logger.info("Enqueued prediction task for prediction_id=%s", prediction.id)
+        from app.tasks.prediction_tasks import async_process_prediction  # noqa: PLC0415
+        background_tasks.add_task(async_process_prediction, prediction.id)
+        logger.info("Enqueued background prediction task for prediction_id=%s", prediction.id)
     except Exception as exc:
-        logger.warning("Could not enqueue Celery task: %s — marking as processing", exc)
-        # Fall back: run inline (dev mode without Redis)
-        prediction.status = "pending"
-        await db.flush()
+        logger.error("Could not trigger background task: %s", exc)
 
     return PredictionResponse.model_validate(prediction)
 

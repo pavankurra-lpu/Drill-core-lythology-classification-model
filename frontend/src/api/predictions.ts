@@ -7,47 +7,41 @@ import type {
 } from '@/types'
 
 export const predictionsApi = {
-  uploadAndPredict: async (
+  uploadImage: async (
     file: File,
-    model: string = 'efficientnet_b3',
-    topK: number = 5,
-    onUploadProgress?: (progress: number) => void
-  ): Promise<PredictionResult> => {
+    modelUsed: string = 'EfficientNet-B3'
+  ): Promise<any> => {
     const formData = new FormData()
-    formData.append('image', file)
-    formData.append('model', model)
-    formData.append('top_k', String(topK))
+    formData.append('file', file)
+    formData.append('model_used', modelUsed)
 
-    const { data } = await apiClient.post('/api/predictions/predict', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (progressEvent) => {
-        if (onUploadProgress && progressEvent.total) {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          onUploadProgress(progress)
-        }
-      },
+    const { data } = await apiClient.post('/api/v1/predictions/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
     })
     return data
   },
 
-  getPrediction: async (id: string): Promise<Prediction> => {
-    const { data } = await apiClient.get(`/api/predictions/${id}`)
+  getPrediction: async (id: number): Promise<any> => {
+    const { data } = await apiClient.get(`/api/v1/predictions/${id}`)
     return data
   },
 
   listPredictions: async (
-    params: PredictionFilterParams = {}
-  ): Promise<PaginatedResponse<Prediction>> => {
-    const { data } = await apiClient.get('/api/predictions', { params })
+    page: number = 1,
+    perPage: number = 20
+  ): Promise<any> => {
+    const { data } = await apiClient.get('/api/v1/predictions/', {
+      params: { page, per_page: perPage }
+    })
     return data
   },
 
-  deletePrediction: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/predictions/${id}`)
+  deletePrediction: async (id: number): Promise<void> => {
+    await apiClient.delete(`/api/v1/predictions/${id}`)
   },
 
   exportPredictions: async (params: PredictionFilterParams = {}): Promise<Blob> => {
-    const { data } = await apiClient.get('/api/predictions/export', {
+    const { data } = await apiClient.get('/api/v1/predictions/export', {
       params,
       responseType: 'blob',
     })
@@ -55,6 +49,8 @@ export const predictionsApi = {
   },
 
   getPredictionImage: (id: string): string => {
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/predictions/${id}/image`
+    return `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/predictions/${id}/image`
   },
 }
+
+export default predictionsApi

@@ -56,3 +56,6 @@ export const datasetsApi = {
     return data
   },
 }
+
+export default datasetsApi
+

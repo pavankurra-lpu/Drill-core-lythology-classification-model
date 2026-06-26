@@ -9,6 +9,9 @@ export const useAnalyticsOverview = (params: AnalyticsParams = {}) => {
   })
 }
 
+export const useAnalytics = useAnalyticsOverview
+
+
 export const usePredictionTimeline = (params: AnalyticsParams = {}) => {
   return useQuery({
     queryKey: ['analytics', 'timeline', params],

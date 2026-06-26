@@ -30,3 +30,5 @@ seaborn==0.13.2
 PyPDF2==3.0.1
 langchain==0.2.5
 langchain-community==0.2.5
+aiosqlite==0.20.0
+

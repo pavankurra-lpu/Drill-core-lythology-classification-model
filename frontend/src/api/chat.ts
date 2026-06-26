@@ -70,3 +70,6 @@ export const chatApi = {
     return data
   },
 }
+
+export default chatApi
+

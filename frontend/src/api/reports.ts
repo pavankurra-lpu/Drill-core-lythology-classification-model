@@ -36,3 +36,6 @@ export const reportsApi = {
     return `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/reports/${id}/preview`
   },
 }
+
+export default reportsApi
+

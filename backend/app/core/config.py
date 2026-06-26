@@ -32,10 +32,10 @@ class Settings(BaseSettings):
 
     # ── Database ─────────────────────────────────────────────────────────────
     DATABASE_URL: str = (
-        "postgresql+asyncpg://postgres:postgres@localhost:5432/lithology_db"
+        "sqlite+aiosqlite:///./lithology.db"
     )
     SYNC_DATABASE_URL: str = (
-        "postgresql+psycopg2://postgres:postgres@localhost:5432/lithology_db"
+        "sqlite:///./lithology.db"
     )
 
     # ── Redis / Celery ────────────────────────────────────────────────────────

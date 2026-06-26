@@ -61,3 +61,6 @@ export const adminApi = {
     return data
   },
 }
+
+export default adminApi
+
