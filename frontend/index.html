@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Automated Lithology Classification System - AI-powered drill core sample analysis using Machine Learning" />
+    <meta name="theme-color" content="#0a0f1e" />
+    <meta property="og:title" content="GeoVision AI - Lithology Classification" />
+    <meta property="og:description" content="Enterprise-grade automated lithology classification for drill core samples" />
+    <title>GeoVision AI | Lithology Classification System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --scrollbar-width: 8px;
+        --scrollbar-track: rgba(255,255,255,0.03);
+        --scrollbar-thumb: rgba(99, 102, 241, 0.4);
+        --scrollbar-thumb-hover: rgba(99, 102, 241, 0.7);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; height: 100%; }
+      body {
+        background-color: #0a0f1e;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+      #root { height: 100%; }
+      ::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
+      ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 4px; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+      ::selection { background: rgba(99, 102, 241, 0.3); color: #f1f5f9; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
