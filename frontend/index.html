@@ -1,42 +1,235 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Automated Lithology Classification System - AI-powered drill core sample analysis using Machine Learning" />
-    <meta name="theme-color" content="#0a0f1e" />
-    <meta property="og:title" content="GeoVision AI - Lithology Classification" />
-    <meta property="og:description" content="Enterprise-grade automated lithology classification for drill core samples" />
-    <title>GeoVision AI | Lithology Classification System</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <style>
-      :root {
-        --scrollbar-width: 8px;
-        --scrollbar-track: rgba(255,255,255,0.03);
-        --scrollbar-thumb: rgba(99, 102, 241, 0.4);
-        --scrollbar-thumb-hover: rgba(99, 102, 241, 0.7);
-      }
-      * { box-sizing: border-box; }
-      html, body { margin: 0; padding: 0; height: 100%; }
-      body {
-        background-color: #0a0f1e;
-        color: #f1f5f9;
-        font-family: 'Inter', sans-serif;
-        overflow-x: hidden;
-      }
-      #root { height: 100%; }
-      ::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
-      ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 4px; }
-      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
-      ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
-      ::selection { background: rgba(99, 102, 241, 0.3); color: #f1f5f9; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drill Core Lithology Classification System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Glow Elements -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <div class="app-container">
+        <!-- Header & Navigation -->
+        <header class="main-header">
+            <div class="logo">
+                <i data-lucide="gem" class="logo-icon"></i>
+                <span class="logo-text">Core<span class="accent-text">Lith</span></span>
+            </div>
+            <nav class="nav-bar">
+                <button class="nav-btn active" data-tab="home">Home</button>
+                <button class="nav-btn" data-tab="predict">Predict</button>
+                <button class="nav-btn" data-tab="about">About</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="content-wrapper">
+            <!-- HOME TAB -->
+            <section id="home-tab" class="tab-content active">
+                <div class="hero-section">
+                    <span class="badge">Deep Learning Geology Project</span>
+                    <h1 class="hero-title">Automated Drill Core <br><span class="gradient-text">Lithology Classifier</span></h1>
+                    <p class="hero-subtitle">Identify stratigraphic rock and stone types from drill core samples instantly using state-of-the-art ResNet50 Transfer Learning.</p>
+                    
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="switchTab('predict')">
+                            <span>Analyze Core Image</span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                        <button class="btn btn-secondary" onclick="switchTab('about')">
+                            <span>Learn More</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feat-icon-wrapper">
+                            <i data-lucide="cpu"></i>
+                        </div>
+                        <h3>Transfer Learning</h3>
+                        <p>Leverages pretrained ResNet50 deep CNN to extract detailed micro-textures from rock cross-sections.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feat-icon-wrapper">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h3>10 Rock Classes</h3>
+                        <p>Classifies Granite, Sandstone, Limestone, Basalt, Shale, Quartzite, Marble, Dolomite, Coal, and Gneiss.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feat-icon-wrapper">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h3>Instant Inference</h3>
+                        <p>High-performance FastAPI prediction backend processes and returns multi-class probabilities in milliseconds.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PREDICT TAB -->
+            <section id="predict-tab" class="tab-content">
+                <div class="predict-layout">
+                    <!-- Column 1: Upload Card -->
+                    <div class="card upload-card">
+                        <h2 class="card-title"><i data-lucide="image"></i> Input Core Sample</h2>
+                        <p class="card-subtitle">Upload a close-up image of a drill core rock slice for classification.</p>
+                        
+                        <div class="drop-zone" id="drop-zone">
+                            <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.bmp,.webp" hidden>
+                            <div class="drop-zone-prompt">
+                                <i data-lucide="cloud-upload" class="upload-large-icon"></i>
+                                <p class="drop-title">Drag & drop your core image here</p>
+                                <p class="drop-or">or</p>
+                                <button class="btn btn-secondary btn-sm" id="browse-btn">Browse Files</button>
+                                <p class="drop-info">Supported formats: JPG, PNG, WEBP, BMP (max 10MB)</p>
+                            </div>
+                            <div class="preview-container" id="preview-container" style="display: none;">
+                                <img src="" alt="Core preview" class="image-preview" id="image-preview">
+                                <button class="btn-clear-image" id="clear-img-btn" title="Remove image">
+                                    <i data-lucide="x"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block" id="predict-btn" disabled>
+                            <i data-lucide="search-code"></i>
+                            <span>Classify Lithology</span>
+                        </button>
+                    </div>
+
+                    <!-- Column 2: Results Card -->
+                    <div class="card results-card" id="results-card">
+                        <!-- Initial state: Waiting for upload -->
+                        <div class="results-empty" id="results-empty">
+                            <i data-lucide="binary" class="empty-icon"></i>
+                            <h3>Analysis Awaiting</h3>
+                            <p>Upload a core sample image and click "Classify Lithology" to view predictions and geological data.</p>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="results-loading" id="results-loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <h3>Analyzing Stratigraphy</h3>
+                            <p>Extracting texture features and running ResNet50 inference...</p>
+                        </div>
+
+                        <!-- Prediction Outcome State -->
+                        <div class="results-content" id="results-content" style="display: none;">
+                            <div class="predicted-header">
+                                <span class="badge success-badge">Classification Success</span>
+                                <h2 class="predicted-title" id="predicted-rock-name">Granite</h2>
+                                <div class="confidence-wrapper">
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" id="confidence-bar"></div>
+                                    </div>
+                                    <span class="confidence-val" id="confidence-text">98.5% Confidence</span>
+                                </div>
+                            </div>
+
+                            <hr class="divider">
+
+                            <div class="result-details">
+                                <div class="rock-desc-section">
+                                    <h4>Geological Description</h4>
+                                    <p id="predicted-rock-desc" class="rock-desc">
+                                        An intrusive igneous rock with a coarse-grained texture, primarily composed of quartz, feldspar, and mica.
+                                    </p>
+                                </div>
+                                
+                                <div class="chart-section">
+                                    <h4>Top 3 Probabilities</h4>
+                                    <div class="chart-container">
+                                        <canvas id="probabilities-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT TAB -->
+            <section id="about-tab" class="tab-content">
+                <div class="about-container">
+                    <div class="card about-main-card">
+                        <h2>About the Project</h2>
+                        <p>This **Drill Core Lithology Classification System** is built to showcase modern, automated geological logging. Manual classification of drill cores requires highly skilled geologists and is time-consuming. By applying Transfer Learning on deep convolutional neural networks, this system assists in instantly identifying stratigraphic formations.</p>
+                        
+                        <h3>How it Works</h3>
+                        <div class="about-steps">
+                            <div class="about-step">
+                                <div class="step-num">1</div>
+                                <div>
+                                    <strong>Preprocessing</strong>
+                                    <p>Incoming images are normalized and resized to 224×224 pixels to match the input specifications of the CNN backbone.</p>
+                                </div>
+                            </div>
+                            <div class="about-step">
+                                <div class="step-num">2</div>
+                                <div>
+                                    <strong>Feature Extraction (ResNet50)</strong>
+                                    <p>A pretrained ResNet50 model, trained on over 1 million ImageNet images, extracts hierarchical visual features (texture, grain, boundaries).</p>
+                                </div>
+                            </div>
+                            <div class="about-step">
+                                <div class="step-num">3</div>
+                                <div>
+                                    <strong>Classification Head</strong>
+                                    <p>A customized dense multilayer classifier with dropout regularizations computes the probability distribution across 10 rock types using Softmax activation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Developer Profile Card -->
+                    <div class="card profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i data-lucide="user"></i>
+                            </div>
+                            <div class="profile-titles">
+                                <h3 class="profile-name">Kurra Pavan</h3>
+                                <p class="profile-role">ML Engineer & Full-Stack Developer</p>
+                            </div>
+                        </div>
+                        <p class="profile-bio">Passionate about applying deep learning to structural geology and automated mining workflows.</p>
+                        
+                        <div class="profile-links">
+                            <a href="https://github.com/pavankurra-lpu" target="_blank" class="profile-link btn-github">
+                                <i data-lucide="github"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://linkedin.com/in/pavan-kurra/" target="_blank" class="profile-link btn-linkedin">
+                                <i data-lucide="linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <p>&copy; 2026 CoreLith System. Developed by Kurra Pavan.</p>
+        </footer>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
 </html>

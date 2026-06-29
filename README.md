@@ -1,106 +1,130 @@
-# 🪨 Automated Lithology Classification System for Drill Core Samples
+# Drill Core Lithology Classification System
 
-An enterprise-grade AI system for automated petrographic core scanning, lithology classification, mineral prediction, and geological reporting. Powered by Deep Learning (EfficientNet-B3 / ResNet50) and LLM-driven Retrieval-Augmented Generation (RAG).
+An end-to-end Machine Learning web application designed to automate the logging and classification of stratigraphic drill core rock samples. 
 
----
-
-## ✨ Features
-
-- **Drill-Core Image Classification**: Immediate diagnostic prediction of rock classes and mineral percentages using EfficientNet-B3/ResNet50 models.
-- **RAG Geological Assistant**: Interact with an LLM chatbot trained on stratigraphic manuals, or upload PDF reports to consult custom borehole datasets.
-- **Automated PDF Compiling**: Instantly compile professional petrographic diagnostic reports using ReportLab.
-- **Dataset Retraining**: Ingest custom zip datasets with folders structured as label indices, and trigger Celery training nodes.
-- **Analytics Overview**: Interactive distribution timelines and confidence charts powered by Recharts.
-- **JWT Node Authentication**: Complete security mapping using JWT access/refresh tokens.
+The system leverages a **ResNet50 Deep Convolutional Neural Network (Transfer Learning)** trained using TensorFlow/Keras to classify core slices into 10 distinct lithological classes. It serves predictions via a **FastAPI backend** and presents findings in a modern, **geology-inspired dark UI website**.
 
 ---
 
-## 🏗️ Architecture
+## Folder Structure
 
-```
-                       ┌───────────────────────┐
-                       │      Nginx Proxy      │
-                       └───────────┬───────────┘
-                                   │
-                 ┌─────────────────┴─────────────────┐
-                 ▼                                   ▼
-        ┌─────────────────┐                 ┌─────────────────┐
-        │ React Frontend  │                 │  FastAPI Server │
-        │   (Vite + TS)   │                 │     (Port 8000) │
-        └─────────────────┘                 └────────┬────────┘
-                                                     │
-                                           ┌─────────┴─────────┐
-                                           ▼                   ▼
-                                  ┌────────────────┐   ┌───────────────┐
-                                  │ Celery Workers │   │ PostgreSQL DB │
-                                  │ (Redis broker) │   └───────────────┘
-                                  └────────────────┘
+```text
+├── ml/
+│   └── train.py           # ML Model training, evaluation, and synthetic dataset generator
+├── backend/
+│   └── app.py             # FastAPI backend with /predict endpoint and static files serving
+├── frontend/
+│   ├── index.html         # Three-page SPA (Home, Predict, About) with dark geology theme
+│   ├── style.css          # Premium custom CSS styling
+│   └── script.js          # Chart.js visualization, drag-and-drop, API connection
+├── Dockerfile             # Container configuration for Hugging Face Spaces
+├── requirements.txt       # Dependencies (fastapi, tensorflow, pillow, scikit-learn, etc.)
+└── README.md              # Project documentation and deployment instructions
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## Supported Classes (10 Lithologies)
 
-| Component | Technology |
-|---|---|
-| **Backend** | Python 3.12, FastAPI, SQLAlchemy 2.0 async, Pydantic V2, Celery |
-| **Frontend** | React 19, Vite, TypeScript, Tailwind CSS, Zustand, Recharts |
-| **Machine Learning** | PyTorch, torchvision, Albumentations, OpenCV |
-| **LLM & RAG** | SentenceTransformers, FAISS, LangChain |
-| **DevOps** | Docker, Docker Compose, Nginx, Redis, PostgreSQL |
+- **Igneous**: Granite, Basalt
+- **Sedimentary**: Sandstone, Limestone, Shale, Dolomite, Coal
+- **Metamorphic**: Quartzite, Marble, Gneiss
 
 ---
 
-## 🚀 Local Quick Start (No Docker Required)
+## Local Setup & Run Instructions
 
-This project has been engineered to run locally with zero infrastructure setup. Database tables are automatically initialized and seeded with mock entries on backend startup.
+### 1. Prerequisites
+Ensure you have **Python 3.10+** installed on your system.
 
-### 1. Start the Backend API
+### 2. Create and Activate a Virtual Environment
+Navigate to the project root directory and run:
+
 ```bash
-cd backend
-
-# Create a virtual environment
+# Create Virtual Environment
 python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 
-# Install requirements
+# Activate Virtual Environment
+# On Windows (PowerShell):
+venv\Scripts\Activate.ps1
+# On Windows (CMD):
+venv\Scripts\activate.bat
+# On macOS / Linux:
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+Install all required libraries inside the virtual environment:
+
+```bash
 pip install -r requirements.txt
-
-# Start FastAPI server
-uvicorn app.main:app --reload --port 8000
 ```
-- **FastAPI Documentation**: http://localhost:8000/docs
-- Database will be initialized in `backend/lithology.db` with seeded data.
 
-### 2. Start the React Frontend
-Open a new terminal:
+### 4. Generate/Train the Model (`model.h5`)
+You need a trained `model.h5` in the root of the workspace for the FastAPI server to start. You can generate it using the following options:
+
+*   **Option A: Generate a Dummy Model (Rapid Testing)**
+    Instantly compiles a small CNN matching the input/output signatures and saves it. Recommended to quickly see the web application in action:
+    ```bash
+    python ml/train.py --dummy
+    ```
+
+*   **Option B: Generate Synthetic Data and Train (Test Full Pipeline)**
+    Automatically generates synthetic colored rock patterns across the 10 classes and trains a ResNet50 model for 5 epochs, producing evaluation metrics and saving the model:
+    ```bash
+    python ml/train.py --generate_synthetic --epochs 5
+    ```
+
+*   **Option C: Train on Custom Core Dataset**
+    If you have your own dataset organized in directories (e.g. `dataset/Granite/`, `dataset/Sandstone/` etc.), run:
+    ```bash
+    python ml/train.py --data_dir dataset --epochs 10
+    ```
+
+### 5. Start the FastAPI Server
+Run the FastAPI development server:
+
 ```bash
-cd frontend
-
-# Install UI packages
-npm install
-
-# Start Vite server
-npm run dev
+uvicorn backend.app:app --reload
 ```
-- **Frontend UI**: http://localhost:3000
 
-### 3. Default Credentials
-Log in with the seeded credentials:
-- **Email**: `admin@lithology.ai`
-- **Password**: `Admin@123456`
+Open your browser and visit: **`http://127.0.0.1:8000/`**
 
 ---
 
-## 🧪 Testing
+## Deploying to Hugging Face Spaces (Step-by-Step)
 
-To trigger the automated pytest execution matrix:
+Hugging Face Spaces is an easy way to host ML applications for free. Because this application contains both a Python API and static assets, we deploy it using the **Docker SDK**.
+
+### Step 1: Create a Hugging Face Account
+Go to [huggingface.co](https://huggingface.co/) and sign up or log in.
+
+### Step 2: Create a New Space
+1. Click on your profile picture in the top-right and select **"New Space"**.
+2. Set a **Space Name** (e.g., `drill-core-lithology-classifier`).
+3. Select **Docker** as the SDK.
+4. Under Docker templates, select **Blank** (our custom `Dockerfile` handles everything).
+5. Choose **Public** or **Private** visibility.
+6. Click **"Create Space"**.
+
+### Step 3: Clone the Space Repository
+Locally, clone the Hugging Face repository created for your Space (replace `username` and `space-name`):
+
 ```bash
-cd backend
-python -m pytest ../tests/ -v
+git clone https://huggingface.co/spaces/username/space-name
 ```
 
----
+### Step 4: Copy Code and Push
+1. Copy all folders and files from this project (`ml/`, `backend/`, `frontend/`, `requirements.txt`, `Dockerfile`, `README.md`) into your cloned repository folder.
+2. Commit and push the changes:
 
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+git add .
+git commit -m "Initial commit of lithology classification system"
+git push
+```
+
+### Step 5: Wait for Build to Complete
+Hugging Face will automatically detect the `Dockerfile`, install the dependencies from `requirements.txt`, trigger the `python ml/train.py --dummy` script to generate a model container, and boot the FastAPI application.
+
+After 2–3 minutes, your live web app will be accessible directly in the browser!
