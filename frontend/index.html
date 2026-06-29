@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drill Core Lithology Classification System</title>
+    <title>CoreLith - Professional Lithology Analysis Platform</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,220 +16,414 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background Glow Elements -->
+    <!-- Ambient Glow Effects -->
     <div class="glow-bg glow-1"></div>
     <div class="glow-bg glow-2"></div>
 
-    <div class="app-container">
-        <!-- Header & Navigation -->
-        <header class="main-header">
-            <div class="logo">
-                <i data-lucide="gem" class="logo-icon"></i>
-                <span class="logo-text">Core<span class="accent-text">Lith</span></span>
+    <!-- Master SaaS Layout Wrapper -->
+    <div class="saas-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i data-lucide="gem" class="brand-icon"></i>
+                <div class="brand-info">
+                    <span class="brand-name">Core<span class="brand-accent">Lith</span></span>
+                    <span class="brand-badge">SaaS Enterprise</span>
+                </div>
             </div>
-            <nav class="nav-bar">
-                <button class="nav-btn active" data-tab="home">Home</button>
-                <button class="nav-btn" data-tab="predict">Predict</button>
-                <button class="nav-btn" data-tab="about">About</button>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="classifier">
+                    <i data-lucide="scan-search"></i>
+                    <span>Classifier</span>
+                </button>
+                <button class="nav-item" data-tab="database">
+                    <i data-lucide="database"></i>
+                    <span>Core Database</span>
+                </button>
+                <button class="nav-item" data-tab="about">
+                    <i data-lucide="info"></i>
+                    <span>About Platform</span>
+                </button>
             </nav>
-        </header>
-
+            
+            <!-- Sidebar User/Geologist Profile Card -->
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i data-lucide="user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">Kurra Pavan</span>
+                    <span class="user-status"><span class="status-dot"></span>Geologist-in-Chief</span>
+                </div>
+            </div>
+        </aside>
+        
         <!-- Main Content Area -->
-        <main class="content-wrapper">
-            <!-- HOME TAB -->
-            <section id="home-tab" class="tab-content active">
-                <div class="hero-section">
-                    <span class="badge">Deep Learning Geology Project</span>
-                    <h1 class="hero-title">Automated Drill Core <br><span class="gradient-text">Lithology Classifier</span></h1>
-                    <p class="hero-subtitle">Identify stratigraphic rock and stone types from drill core samples instantly using state-of-the-art ResNet50 Transfer Learning.</p>
-                    
-                    <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="switchTab('predict')">
-                            <span>Analyze Core Image</span>
-                            <i data-lucide="arrow-right"></i>
-                        </button>
-                        <button class="btn btn-secondary" onclick="switchTab('about')">
-                            <span>Learn More</span>
-                        </button>
+        <main class="main-content">
+            
+            <!-- Top Header Status Bar -->
+            <header class="content-header">
+                <div class="header-title-area">
+                    <h1 id="page-title">Dashboard</h1>
+                    <p id="page-subtitle" class="text-muted">Stratigraphic logs and platform overview.</p>
+                </div>
+                <div class="header-status-widgets">
+                    <div class="status-widget">
+                        <span class="widget-label">System Connectivity</span>
+                        <span class="widget-value text-success"><span class="pulse-dot"></span>Connected</span>
+                    </div>
+                    <div class="status-widget">
+                        <span class="widget-label">Model Pipeline</span>
+                        <span class="widget-value font-mono">ResNet50 v2.4</span>
                     </div>
                 </div>
-
-                <!-- Feature Grid -->
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feat-icon-wrapper">
-                            <i data-lucide="cpu"></i>
+            </header>
+            
+            <!-- Dynamic Workspaces -->
+            <div class="workspace-viewport">
+                
+                <!-- 1. DASHBOARD OVERVIEW WORKSPACE -->
+                <section id="dashboard-tab" class="tab-pane active">
+                    <!-- Statistics Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon-box bg-amber-soft">
+                                <i data-lucide="file-spreadsheet" class="text-amber"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Cores Classified</span>
+                                <h2 class="stat-value" id="stat-total-cores">156</h2>
+                            </div>
                         </div>
-                        <h3>Transfer Learning</h3>
-                        <p>Leverages pretrained ResNet50 deep CNN to extract detailed micro-textures from rock cross-sections.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feat-icon-wrapper">
-                            <i data-lucide="layers"></i>
-                        </div>
-                        <h3>10 Rock Classes</h3>
-                        <p>Classifies Granite, Sandstone, Limestone, Basalt, Shale, Quartzite, Marble, Dolomite, Coal, and Gneiss.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feat-icon-wrapper">
-                            <i data-lucide="zap"></i>
-                        </div>
-                        <h3>Instant Inference</h3>
-                        <p>High-performance FastAPI prediction backend processes and returns multi-class probabilities in milliseconds.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PREDICT TAB -->
-            <section id="predict-tab" class="tab-content">
-                <div class="predict-layout">
-                    <!-- Column 1: Upload Card -->
-                    <div class="card upload-card">
-                        <h2 class="card-title"><i data-lucide="image"></i> Input Core Sample</h2>
-                        <p class="card-subtitle">Upload a close-up image of a drill core rock slice for classification.</p>
                         
-                        <div class="drop-zone" id="drop-zone">
-                            <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.bmp,.webp" hidden>
-                            <div class="drop-zone-prompt">
-                                <i data-lucide="cloud-upload" class="upload-large-icon"></i>
-                                <p class="drop-title">Drag & drop your core image here</p>
-                                <p class="drop-or">or</p>
-                                <button class="btn btn-secondary btn-sm" id="browse-btn">Browse Files</button>
-                                <p class="drop-info">Supported formats: JPG, PNG, WEBP, BMP (max 10MB)</p>
+                        <div class="stat-card">
+                            <div class="stat-icon-box bg-green-soft">
+                                <i data-lucide="shield-check" class="text-green"></i>
                             </div>
-                            <div class="preview-container" id="preview-container" style="display: none;">
-                                <img src="" alt="Core preview" class="image-preview" id="image-preview">
-                                <button class="btn-clear-image" id="clear-img-btn" title="Remove image">
-                                    <i data-lucide="x"></i>
-                                </button>
+                            <div class="stat-content">
+                                <span class="stat-label">Validation Accuracy</span>
+                                <h2 class="stat-value">98.2%</h2>
                             </div>
                         </div>
-
-                        <button class="btn btn-primary btn-block" id="predict-btn" disabled>
-                            <i data-lucide="search-code"></i>
-                            <span>Classify Lithology</span>
-                        </button>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon-box bg-blue-soft">
+                                <i data-lucide="file-digit" class="text-blue"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Supported Lithologies</span>
+                                <h2 class="stat-value">10 Rock Types</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon-box bg-purple-soft">
+                                <i data-lucide="cpu" class="text-purple"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Inference Engine</span>
+                                <h2 class="stat-value text-success">Online</h2>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Column 2: Results Card -->
-                    <div class="card results-card" id="results-card">
-                        <!-- Initial state: Waiting for upload -->
-                        <div class="results-empty" id="results-empty">
-                            <i data-lucide="binary" class="empty-icon"></i>
-                            <h3>Analysis Awaiting</h3>
-                            <p>Upload a core sample image and click "Classify Lithology" to view predictions and geological data.</p>
-                        </div>
-
-                        <!-- Loading State -->
-                        <div class="results-loading" id="results-loading" style="display: none;">
-                            <div class="spinner"></div>
-                            <h3>Analyzing Stratigraphy</h3>
-                            <p>Extracting texture features and running ResNet50 inference...</p>
-                        </div>
-
-                        <!-- Prediction Outcome State -->
-                        <div class="results-content" id="results-content" style="display: none;">
-                            <div class="predicted-header">
-                                <span class="badge success-badge">Classification Success</span>
-                                <h2 class="predicted-title" id="predicted-rock-name">Granite</h2>
-                                <div class="confidence-wrapper">
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill" id="confidence-bar"></div>
-                                    </div>
-                                    <span class="confidence-val" id="confidence-text">98.5% Confidence</span>
+                    
+                    <!-- Dashboard Visual Section -->
+                    <div class="dashboard-body-grid">
+                        <!-- Left Panel: System Details -->
+                        <div class="card sys-info-card">
+                            <h3 class="panel-heading"><i data-lucide="terminal"></i> Machine Learning Config</h3>
+                            <div class="sys-info-table">
+                                <div class="sys-info-row">
+                                    <span class="info-label">Base Architecture</span>
+                                    <span class="info-val font-mono">ResNet50 (Frozen Backbone)</span>
+                                </div>
+                                <div class="sys-info-row">
+                                    <span class="info-label">Weights Initialization</span>
+                                    <span class="info-val font-mono">ImageNet-v1</span>
+                                </div>
+                                <div class="sys-info-row">
+                                    <span class="info-label">Dense Classifier Layers</span>
+                                    <span class="info-val">FC: 512 units (ReLU) + FC: 256 units (ReLU)</span>
+                                </div>
+                                <div class="sys-info-row">
+                                    <span class="info-label">Regularizations</span>
+                                    <span class="info-val">BatchNormalization + Dropout (0.3 / 0.2)</span>
+                                </div>
+                                <div class="sys-info-row">
+                                    <span class="info-label">Hardware Device</span>
+                                    <span class="info-val" id="inference-device">Optimized CPU Cluster</span>
                                 </div>
                             </div>
-
-                            <hr class="divider">
-
-                            <div class="result-details">
-                                <div class="rock-desc-section">
-                                    <h4>Geological Description</h4>
-                                    <p id="predicted-rock-desc" class="rock-desc">
-                                        An intrusive igneous rock with a coarse-grained texture, primarily composed of quartz, feldspar, and mica.
-                                    </p>
+                        </div>
+                        
+                        <!-- Right Panel: Recent Activities -->
+                        <div class="card recent-activity-card">
+                            <div class="panel-header-action">
+                                <h3 class="panel-heading"><i data-lucide="activity"></i> Recent Activity Logs</h3>
+                                <button class="btn-text" onclick="switchTab('database')">View All</button>
+                            </div>
+                            <div class="activity-timeline" id="recent-activity-timeline">
+                                <!-- Timelines will be injected by script.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 2. CLASSIFIER WORKSPACE -->
+                <section id="classifier-tab" class="tab-pane">
+                    <div class="classifier-grid">
+                        
+                        <!-- Upload Console -->
+                        <div class="card upload-console">
+                            <h3 class="panel-heading"><i data-lucide="image-plus"></i> Input Image</h3>
+                            <p class="text-muted text-sm mb-4">Feed a core slice photo for immediate geological classification.</p>
+                            
+                            <div class="drag-drop-area" id="drop-zone">
+                                <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.bmp,.webp" hidden>
+                                <div class="drop-prompt">
+                                    <i data-lucide="upload-cloud" class="upload-icon"></i>
+                                    <p class="drop-text-large">Drag core file here or click to browse</p>
+                                    <p class="drop-text-small text-muted">Supports JPG, PNG, WEBP, BMP up to 10MB</p>
+                                </div>
+                                <div class="image-preview-panel" id="preview-container" style="display: none;">
+                                    <img src="" alt="Core slice preview" class="preview-img" id="image-preview">
+                                    <button class="btn-remove-preview" id="clear-img-btn" title="Remove core image">
+                                        <i data-lucide="x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary btn-block btn-lg" id="predict-btn" disabled>
+                                <i data-lucide="cpu"></i>
+                                <span>Execute Core Analysis</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Inference Output -->
+                        <div class="card inference-output" id="results-card">
+                            <!-- Empty Waiting State -->
+                            <div class="status-state" id="results-empty">
+                                <i data-lucide="microscope" class="state-icon text-muted"></i>
+                                <h3>Awaiting Analysis</h3>
+                                <p class="text-muted text-sm">Upload a drill core sample and click 'Execute Core Analysis' to display classification metrics.</p>
+                            </div>
+                            
+                            <!-- Processing State -->
+                            <div class="status-state" id="results-loading" style="display: none;">
+                                <div class="dual-ring-spinner"></div>
+                                <h3>Executing Neural Net Inference</h3>
+                                <p class="text-muted text-sm">Running image through ResNet50 layers and mapping class probabilities...</p>
+                            </div>
+                            
+                            <!-- Classification Details -->
+                            <div class="results-layout" id="results-content" style="display: none;">
+                                <div class="results-main-stats">
+                                    <span class="badge badge-green"><i data-lucide="check"></i> Analysis Success</span>
+                                    <h2 class="predicted-class-name" id="predicted-rock-name">Granite</h2>
+                                    
+                                    <div class="confidence-meter">
+                                        <div class="meter-bar">
+                                            <div class="meter-bar-fill" id="confidence-bar"></div>
+                                        </div>
+                                        <span class="meter-label" id="confidence-text">98.5% confidence</span>
+                                    </div>
                                 </div>
                                 
-                                <div class="chart-section">
-                                    <h4>Top 3 Probabilities</h4>
-                                    <div class="chart-container">
-                                        <canvas id="probabilities-chart"></canvas>
+                                <hr class="card-divider">
+                                
+                                <div class="geology-report-grid">
+                                    <!-- geological descriptions -->
+                                    <div class="report-desc-box">
+                                        <h4>Lithology Description</h4>
+                                        <p id="predicted-rock-desc" class="geology-description-text"></p>
+                                    </div>
+                                    
+                                    <!-- Structured Geology Metadata -->
+                                    <div class="report-metadata-box">
+                                        <h4>Geological Properties</h4>
+                                        <div class="geo-metadata-table">
+                                            <div class="geo-meta-row">
+                                                <span class="meta-label">Hardness (Mohs)</span>
+                                                <span class="meta-val" id="rock-prop-hardness">-</span>
+                                            </div>
+                                            <div class="geo-meta-row">
+                                                <span class="meta-label">Grain Size</span>
+                                                <span class="meta-val" id="rock-prop-grain">-</span>
+                                            </div>
+                                            <div class="geo-meta-row">
+                                                <span class="meta-label">Geological Era</span>
+                                                <span class="meta-val" id="rock-prop-era">-</span>
+                                            </div>
+                                            <div class="geo-meta-row">
+                                                <span class="meta-label">Primary Minerals</span>
+                                                <span class="meta-val" id="rock-prop-minerals">-</span>
+                                            </div>
+                                            <div class="geo-meta-row">
+                                                <span class="meta-label">Commercial Use</span>
+                                                <span class="meta-val" id="rock-prop-use">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Horizontal probability charts -->
+                                    <div class="report-chart-box">
+                                        <h4>Probability Spectrum (Top 3)</h4>
+                                        <div class="horizontal-chart-holder">
+                                            <canvas id="probabilities-chart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- ABOUT TAB -->
-            <section id="about-tab" class="tab-content">
-                <div class="about-container">
-                    <div class="card about-main-card">
-                        <h2>About the Project</h2>
-                        <p>This **Drill Core Lithology Classification System** is built to showcase modern, automated geological logging. Manual classification of drill cores requires highly skilled geologists and is time-consuming. By applying Transfer Learning on deep convolutional neural networks, this system assists in instantly identifying stratigraphic formations.</p>
+                </section>
+                
+                <!-- 3. DATABASE WORKSPACE -->
+                <section id="database-tab" class="tab-pane">
+                    <div class="card database-card">
                         
-                        <h3>How it Works</h3>
-                        <div class="about-steps">
-                            <div class="about-step">
-                                <div class="step-num">1</div>
-                                <div>
-                                    <strong>Preprocessing</strong>
-                                    <p>Incoming images are normalized and resized to 224×224 pixels to match the input specifications of the CNN backbone.</p>
+                        <!-- Table Utilities -->
+                        <div class="db-toolbar">
+                            <div class="search-box">
+                                <i data-lucide="search"></i>
+                                <input type="text" id="db-search" placeholder="Search by class, geologist, record ID...">
+                            </div>
+                            <div class="filter-controls">
+                                <select id="db-filter-class" class="select-dropdown">
+                                    <option value="all">All Lithology Classes</option>
+                                    <option value="Granite">Granite</option>
+                                    <option value="Sandstone">Sandstone</option>
+                                    <option value="Limestone">Limestone</option>
+                                    <option value="Basalt">Basalt</option>
+                                    <option value="Shale">Shale</option>
+                                    <option value="Quartzite">Quartzite</option>
+                                    <option value="Marble">Marble</option>
+                                    <option value="Dolomite">Dolomite</option>
+                                    <option value="Coal">Coal</option>
+                                    <option value="Gneiss">Gneiss</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Geologic Records Table -->
+                        <div class="table-container">
+                            <table class="db-table">
+                                <thead>
+                                    <tr>
+                                        <th>Record ID</th>
+                                        <th>Timestamp</th>
+                                        <th>Core Preview</th>
+                                        <th>Class Prediction</th>
+                                        <th>Confidence</th>
+                                        <th>Geologist</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="db-table-body">
+                                    <!-- Dynamic rows will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 4. ABOUT WORKSPACE -->
+                <section id="about-tab" class="tab-pane">
+                    <div class="about-grid">
+                        
+                        <!-- Technical Specs Card -->
+                        <div class="card tech-specs-card">
+                            <h2>Automated Core Logging Platform</h2>
+                            <p class="about-lead">CoreLith is an enterprise SaaS dashboard built to accelerate core analysis workflows in mining and exploration geology. It replaces slow, subjective visual logging with deterministic convolutional predictions.</p>
+                            
+                            <hr class="card-divider">
+                            
+                            <h3>Deep Learning Pipeline</h3>
+                            <p>Our model employs <strong>Transfer Learning</strong> utilizing a 50-layer ResNet network architecture pretrained on the 1,000-class ImageNet dataset. The feature extraction layers of the backbone are kept frozen to prevent gradients from altering base textures, allowing the system to use prelearned shapes, edges, and shades. A customized dense classification head learns to associate these textures with specific drilling formations.</p>
+                            
+                            <div class="workflow-timeline">
+                                <div class="workflow-node">
+                                    <div class="node-bullet"><i data-lucide="expand"></i></div>
+                                    <div class="node-content">
+                                        <h4>1. Channel-Wise Normalization</h4>
+                                        <p>Input images are scaled and normalized using standard ImageNet mean subtraction layers directly within the tensor pipeline, avoiding inference preprocessing mismatch bugs.</p>
+                                    </div>
+                                </div>
+                                <div class="workflow-node">
+                                    <div class="node-bullet"><i data-lucide="compass"></i></div>
+                                    <div class="node-content">
+                                        <h4>2. Multi-Scale Feature Extraction</h4>
+                                        <p>ResNet50 base convolutions extract micro-bedding lines, porous boundaries, mineral spots, and rock grain gradients.</p>
+                                    </div>
+                                </div>
+                                <div class="workflow-node">
+                                    <div class="node-bullet"><i data-lucide="layers"></i></div>
+                                    <div class="node-content">
+                                        <h4>3. Softmax Density Prediction</h4>
+                                        <p>Output layer evaluates probability densities over the 10 lithological families using a softmax function:
+                                        \[P(y = i | \mathbf{x}) = \frac{e^{\mathbf{z}_i}}{\sum_{j=1}^{10} e^{\mathbf{z}_j}}\]</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="about-step">
-                                <div class="step-num">2</div>
-                                <div>
-                                    <strong>Feature Extraction (ResNet50)</strong>
-                                    <p>A pretrained ResNet50 model, trained on over 1 million ImageNet images, extracts hierarchical visual features (texture, grain, boundaries).</p>
+                        </div>
+                        
+                        <!-- Profile Card -->
+                        <div class="card about-profile-card">
+                            <div class="profile-header-saas">
+                                <div class="profile-avatar-box">
+                                    <i data-lucide="cpu" class="avatar-icon"></i>
+                                </div>
+                                <div class="profile-title-box">
+                                    <h3>Kurra Pavan</h3>
+                                    <span class="badge badge-amber">Lead ML Architect</span>
                                 </div>
                             </div>
-                            <div class="about-step">
-                                <div class="step-num">3</div>
-                                <div>
-                                    <strong>Classification Head</strong>
-                                    <p>A customized dense multilayer classifier with dropout regularizations computes the probability distribution across 10 rock types using Softmax activation.</p>
+                            <p class="profile-bio-saas">Expert Machine Learning Engineer and Full-Stack Developer specializing in geological computer vision and mining automation systems.</p>
+                            
+                            <div class="profile-metrics-list">
+                                <div class="profile-metric-row">
+                                    <span class="metric-name">Expertise</span>
+                                    <span class="metric-val">PyTorch, Keras, FastAPI, JS</span>
                                 </div>
+                                <div class="profile-metric-row">
+                                    <span class="metric-name">GitHub Portfolio</span>
+                                    <span class="metric-val text-amber">github.com/pavankurra-lpu</span>
+                                </div>
+                                <div class="profile-metric-row">
+                                    <span class="metric-name">LinkedIn Contact</span>
+                                    <span class="metric-val text-amber">linkedin.com/in/pavan-kurra</span>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-action-links">
+                                <a href="https://github.com/pavankurra-lpu" target="_blank" class="profile-btn btn-gh">
+                                    <i data-lucide="github"></i>
+                                    <span>Connect on GitHub</span>
+                                </a>
+                                <a href="https://linkedin.com/in/pavan-kurra/" target="_blank" class="profile-btn btn-li">
+                                    <i data-lucide="linkedin"></i>
+                                    <span>Connect on LinkedIn</span>
+                                </a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Developer Profile Card -->
-                    <div class="card profile-card">
-                        <div class="profile-header">
-                            <div class="profile-avatar">
-                                <i data-lucide="user"></i>
-                            </div>
-                            <div class="profile-titles">
-                                <h3 class="profile-name">Kurra Pavan</h3>
-                                <p class="profile-role">ML Engineer & Full-Stack Developer</p>
-                            </div>
-                        </div>
-                        <p class="profile-bio">Passionate about applying deep learning to structural geology and automated mining workflows.</p>
-                        
-                        <div class="profile-links">
-                            <a href="https://github.com/pavankurra-lpu" target="_blank" class="profile-link btn-github">
-                                <i data-lucide="github"></i>
-                                <span>GitHub</span>
-                            </a>
-                            <a href="https://linkedin.com/in/pavan-kurra/" target="_blank" class="profile-link btn-linkedin">
-                                <i data-lucide="linkedin"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
+            
+            <!-- Fixed Layout Footer -->
+            <footer class="viewport-footer">
+                <p>&copy; 2026 CoreLith Systems Inc. All rights reserved. Platform developed by Kurra Pavan.</p>
+            </footer>
         </main>
-
-        <!-- Footer -->
-        <footer class="main-footer">
-            <p>&copy; 2026 CoreLith System. Developed by Kurra Pavan.</p>
-        </footer>
     </div>
 
-    <!-- Custom Script -->
+    <!-- Application Controller -->
     <script src="script.js"></script>
 </body>
 </html>
