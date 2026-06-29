@@ -51,7 +51,11 @@ def load_model():
     if os.path.exists(model_path):
         print(f"Loading TensorFlow model from '{model_path}'...")
         try:
-            model = tf.keras.models.load_model(model_path)
+            # Register preprocess_input as a custom object for Keras deserialization
+            model = tf.keras.models.load_model(
+                model_path,
+                custom_objects={'preprocess_input': tf.keras.applications.resnet50.preprocess_input}
+            )
             print("Model loaded successfully!")
         except Exception as e:
             print(f"Failed to load model: {e}")
@@ -78,7 +82,10 @@ async def predict(file: UploadFile = File(...)):
         model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model.h5")
         if os.path.exists(model_path):
             try:
-                model = tf.keras.models.load_model(model_path)
+                model = tf.keras.models.load_model(
+                    model_path,
+                    custom_objects={'preprocess_input': tf.keras.applications.resnet50.preprocess_input}
+                )
             except Exception as e:
                 raise HTTPException(status_code=500, detail=f"Model exists but could not be loaded: {e}")
         else:
